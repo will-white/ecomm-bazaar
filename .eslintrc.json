@@ -1,0 +1,70 @@
+{
+  "root": true,
+  "ignorePatterns": ["dist"],
+  "plugins": ["promise"],
+  "extends": ["eslint:recommended", "plugin:promise/recommended"],
+  "settings": {
+    "react": {
+      "version": "18"
+    }
+  },
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx", "*.jsx"],
+      "plugins": ["react", "jsx-a11y", "react-refresh"],
+      "extends": [
+        "plugin:jsx-a11y/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@tanstack/eslint-plugin-query/recommended"
+      ],
+      "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-uses-react": "off",
+        "react/prefer-read-only-props": "error",
+        "react/prefer-stateless-function": "error",
+        "react/no-unstable-nested-components": "error",
+        "react/no-array-index-key": "error",
+        "react/jsx-wrap-multilines": "error",
+        "react/jsx-sort-props": "warn",
+        "react/jsx-pascal-case": "error",
+        "react/jsx-props-no-multi-spaces": "error",
+        "react/jsx-no-leaked-render": "error",
+        "react/jsx-fragments": "error",
+        "react/jsx-boolean-value": "error",
+        "react/hook-use-state": "error",
+        "react/destructuring-assignment": "error",
+        "react/boolean-prop-naming": "error",
+        "react/button-has-type": "error",
+        "react/jsx-no-bind": "error",
+        "react/jsx-no-constructed-context-values": "error",
+        "react-refresh/only-export-components": "warn"
+      }
+    },
+    {
+      // https://github.com/TanStack/query/tree/main/packages/eslint-plugin-query
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked"
+      ],
+      "rules": {},
+      "parserOptions": {
+        "project": true,
+        "tsconfigRootDir": "./"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": [],
+      "rules": {}
+    }
+  ]
+}
