@@ -39,12 +39,17 @@ export class AuthService {
     const payload: AccessToken = { sub: id };
 
     return {
-      idToken: await this.jwtService.signAsync({
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+      idToken: await this.jwtService.signAsync(
+        {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+        { expiresIn: 60 * 60 * 24 * 7 }
+      ),
+      accessToken: await this.jwtService.signAsync(payload, {
+        expiresIn: 60 * 5,
       }),
-      accessToken: await this.jwtService.signAsync(payload),
       refreshToken: await this.generateRefreshToken(id),
     };
   }
@@ -64,8 +69,13 @@ export class AuthService {
     const payload: AccessToken = { sub: result };
 
     return {
-      idToken: await this.jwtService.signAsync({ email }),
-      accessToken: await this.jwtService.signAsync(payload),
+      idToken: await this.jwtService.signAsync(
+        { email },
+        { expiresIn: 60 * 60 * 24 * 7 }
+      ),
+      accessToken: await this.jwtService.signAsync(payload, {
+        expiresIn: 60 * 5,
+      }),
       refreshToken: await this.generateRefreshToken(result),
     };
   }

@@ -2,6 +2,7 @@
   "name": "ecomm-bazaar",
   "version": "1.0.0",
   "scripts": {
+    "start": "pnpm -r start",
     "lint": "eslint \"{apps,packages}/**/*.{ts,tsx,js,jsx}\" --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

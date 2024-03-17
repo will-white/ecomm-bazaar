@@ -15,7 +15,15 @@ import { JwtCookieStrategy } from './strategies/jwt-cookie.strategy';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
+        verifyOptions: {
+          // TODO: Require proper audience/issuer
+          // audience:,
+          // issuer:
+          clockTolerance: 30000, // 30s
+        },
         signOptions: {
+          // audience:
+          // issuer:
           expiresIn: parseInt(
             configService.getOrThrow<string>(
               'ACCESS_TOKEN_VALIDITY_DURATION_IN_SEC'

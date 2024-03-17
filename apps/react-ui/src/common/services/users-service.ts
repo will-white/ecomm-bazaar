@@ -27,7 +27,7 @@ class UsersService extends AxiosClient {
     return (await this.client.delete(id)).data;
   }
 
-  async getMe() {
+  async getMe(): Promise<unknown> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return (await this.client.get('me')).data;
   }

@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { memo } from 'react';
 
 const AuthLayout = () => {
   return (
@@ -9,7 +10,7 @@ const AuthLayout = () => {
 };
 
 export const Route = createFileRoute('/_auth')({
-  component: AuthLayout,
+  component: memo(AuthLayout),
 });
 
 export default AuthLayout;

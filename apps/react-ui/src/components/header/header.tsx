@@ -4,17 +4,13 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from 'react';
+import { memo, useContext } from 'react';
+import { UserContext } from '../../common/providers/user-provider';
 
-export interface HeaderProps {}
+// export interface HeaderProps {}
 
-export function Header(props: HeaderProps) {
-  const [age, setAge] = useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
+const Header = () => {
+  const { idToken } = useContext(UserContext) ?? {};
 
   return (
     <header className="container mx-auto flex flex-row justify-between items-center">
@@ -63,12 +59,14 @@ export function Header(props: HeaderProps) {
         <Link className="[&.active]:font-bold" to="/">
           Home
         </Link>
-        <Link className="[&.active]:font-bold" to="/login">
-          Login
-        </Link>
+        {idToken == null && (
+          <Link className="[&.active]:font-bold" to="/login">
+            Login
+          </Link>
+        )}
       </div>
     </header>
   );
-}
+};
 
-export default Header;
+export default memo(Header);

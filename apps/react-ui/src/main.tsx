@@ -10,18 +10,16 @@ import {
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Spinner } from './components/spinner';
+import UserProvider from './common/providers/user-provider';
+import pendingSpinner from './components/pendingSpinner';
 
 export const queryClient = new QueryClient();
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  defaultPendingComponent: () => (
-    <div className={`p-2 text-2xl`}>
-      <Spinner />
-    </div>
-  ),
+  defaultPendingComponent: pendingSpinner,
+  defaultPendingMs: 10,
   defaultErrorComponent: ({ error }: { error: unknown }) => (
     <ErrorComponent error={error} />
   ),
@@ -46,7 +44,9 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
     </QueryClientProvider>
   </StrictMode>
 );

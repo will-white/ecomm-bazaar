@@ -60,7 +60,7 @@ export class AuthController {
       // sameOrigin: 'none' // set this in production if the server is separate domain
     });
 
-    return idToken;
+    return { idToken };
   }
 
   @Post('register')
@@ -92,7 +92,7 @@ export class AuthController {
       // sameOrigin: 'none' // set this in production if the server is separate domain
     });
 
-    return idToken;
+    return { idToken };
   }
 
   // TODO: RefreshTokenGuard
@@ -114,7 +114,7 @@ export class AuthController {
       // sameOrigin: 'none' // set this in production if the server is separate domain
     });
 
-    return accessToken;
+    return { accessToken };
   }
 
   @Post('logout')

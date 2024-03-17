@@ -12,10 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useMutation } from '@tanstack/react-query';
 import authService from '../../common/services/auth-service';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
+import { UserContext } from '../../common/providers/user-provider';
+import { jwtDecode } from 'jwt-decode';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setIdToken } = useContext(UserContext) ?? {};
   const { mutate, isPending } = useMutation({
     mutationFn: async ({
       email,
@@ -25,9 +28,9 @@ const Login = () => {
       email: string;
       password: string;
       remember: boolean;
-    }) => void (await authService.login(email, password, remember)),
+    }) => await authService.login(email, password, remember),
     onSuccess: (data) => {
-      console.log(data);
+      setIdToken && setIdToken(jwtDecode(data));
       void navigate({ to: '/' });
     },
     onError: (err) => {

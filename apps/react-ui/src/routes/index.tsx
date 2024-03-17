@@ -1,19 +1,26 @@
 import { Button } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
 import usersService from '../common/services/users-service';
+import { memo, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-export const Route = createFileRoute('/')({
-  component: LayoutComponent,
-});
+const LayoutComponent = () => {
+  const { refetch } = useQuery({
+    queryKey: ['me'],
+    queryFn: () => usersService.getMe(),
+  });
+  const handleClick = useCallback(() => void refetch(), [refetch]);
 
-function LayoutComponent() {
   return (
     <div>
       <div>Index</div>
-      // eslint-disable-next-line react/jsx-no-bind
-      <Button onClick={async () => await usersService.getMe()} type="button">
+      <Button onClick={handleClick} type="button">
         Press me!
       </Button>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute('/')({
+  component: memo(LayoutComponent),
+});
