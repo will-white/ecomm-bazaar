@@ -14,26 +14,29 @@ import { AuthService } from './auth.service';
 import { Public } from '../common/decorators/public.decorator';
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiCreatedResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { LoginDto } from './types';
 
 @Public()
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('login')
   @ApiCreatedResponse({ description: 'Logged in' })
   @ApiBadRequestResponse({ description: 'Invalid input' })
+  @ApiBody({ type: LoginDto }) // '{ "email": "test@test.invalid"\, "password": "12345" }'
   @ApiOperation({ summary: 'Login' })
   @HttpCode(HttpStatus.OK)
   async login(
     // TODO: rememberMe increasing login duration
-    @Body() req: { email?: string; password?: string; rememberMe?: boolean },
+    @Body() req: LoginDto,
     @Res({ passthrough: true }) response: FastifyReply
   ) {
     const { idToken, accessToken, refreshToken } = await this.authService.login(

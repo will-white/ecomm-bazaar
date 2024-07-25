@@ -105,9 +105,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-
   await app.register(fastifyCookie, {
     secret: configService.getOrThrow<string | undefined>('COOKIE_SECRET'),
   });
@@ -118,9 +115,7 @@ async function bootstrap() {
 
   await app.listen(port, '0.0.0.0');
 
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
 void bootstrap();

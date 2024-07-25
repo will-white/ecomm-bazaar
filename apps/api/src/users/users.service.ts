@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { MySql2Database } from 'drizzle-orm/mysql2';
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DB_CONNECTION } from 'src/drizzle.module';
 import schema from 'db/schema';
 import { eq } from 'drizzle-orm';
@@ -12,13 +12,13 @@ export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
   constructor(
-    @Inject(DB_CONNECTION) private db: MySql2Database<typeof schema>
-  ) {}
+    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>
+  ) { }
 
   async create(dto: CreateUserDto) {
     const table = await this.db.insert(schema.user).values(dto);
 
-    this.logger.log(table[0].insertId);
+    this.logger.log(table[0]);
     const test = table[1];
     this.logger.log(test);
 

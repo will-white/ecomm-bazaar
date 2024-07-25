@@ -5,7 +5,7 @@ import {
   HealthCheck,
   HealthCheckError,
 } from '@nestjs/terminus';
-import { MySql2Database } from 'drizzle-orm/mysql2';
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { DB_CONNECTION } from 'src/drizzle.module';
 import { sql } from 'drizzle-orm';
 import schema from 'db/schema';
@@ -18,8 +18,8 @@ export class HealthController {
 
   constructor(
     private health: HealthCheckService,
-    @Inject(DB_CONNECTION) private db: MySql2Database<typeof schema>
-  ) {}
+    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>
+  ) { }
 
   @Get()
   @Public()
@@ -34,15 +34,15 @@ export class HealthController {
           await this.db.execute(sql`/* ping */ SELECT 1`);
         } catch (error) {
           this.logger.error(error);
-          throw new HealthCheckError('MySQL ping check failed', {
-            mysql: {
+          throw new HealthCheckError('Postgres ping check failed', {
+            postgres: {
               status: 'down',
             },
           });
         }
 
         return {
-          mysql: {
+          postgres: {
             status: 'up',
           },
         };

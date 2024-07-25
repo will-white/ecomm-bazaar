@@ -3,8 +3,7 @@ import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import schema from 'db/schema';
 
 export class CreateUserDto
-  implements Omit<typeof schema.user.$inferInsert, 'id'>
-{
+  implements Omit<typeof schema.user.$inferInsert, 'id'> {
   @IsString()
   @IsNotEmpty()
   @MaxLength(320)
@@ -15,5 +14,5 @@ export class CreateUserDto
   @IsNotEmpty()
   @IsOptional()
   @ApiProperty({ example: 'password' })
-  password!: string;
+  password!: Buffer;
 }

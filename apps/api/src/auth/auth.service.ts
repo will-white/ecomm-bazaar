@@ -17,7 +17,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService
-  ) {}
+  ) { }
 
   async login(email: string, password: string) {
     const {
@@ -64,7 +64,7 @@ export class AuthService {
     const hashedPassword = await hash(password, 12);
     const result = await this.usersService.create({
       email,
-      password: hashedPassword,
+      password: Buffer.from(hashedPassword),
     });
     const payload: AccessToken = { sub: result };
 

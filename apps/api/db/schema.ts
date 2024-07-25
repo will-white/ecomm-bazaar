@@ -1,20 +1,29 @@
-import { sql } from 'drizzle-orm';
-import { mysqlTable, varchar, timestamp, binary } from 'drizzle-orm/mysql-core';
+import { pgTable, varchar, timestamp, customType, uuid, pgSchema } from 'drizzle-orm/pg-core';
+
+const bytea = customType<{
+  data: Buffer
+  default: false
+}>({
+  dataType() {
+    return 'bytea'
+  },
+})
+
+// export const schema = pgSchema("test_schema");
 
 const auditingColumns = {
   // Until https://github.com/drizzle-team/drizzle-orm/pull/1114 is merged do sql'current_timestamp'
   createdAt: timestamp('created_at').defaultNow().notNull(),
   createdBy: varchar('created_by', { length: 48 }),
-  modifiedAt: timestamp('modified_at').defaultNow().onUpdateNow().notNull(),
+  // modifiedAt: timestamp('modified_at').defaultNow().$onUpdate(() => new Date()).notNull(),
+  modifiedAt: timestamp('modified_at').defaultNow().notNull(),
   modifiedBy: varchar('modified_by', { length: 48 }),
 };
 
-export const user = mysqlTable('user', {
-  id: varchar('id', { length: 48 })
-    .default(sql`(UUID())`)
-    .primaryKey(),
+export const user = pgTable('user', {
+  id: uuid('id').defaultRandom().primaryKey(),
   email: varchar('email', { length: 320 }).notNull(),
-  password: binary('password', { length: 60 }).notNull(),
+  password: bytea('password', { length: 60 }).notNull(),
   firstName: varchar('first_name', { length: 48 }),
   lastName: varchar('last_name', { length: 48 }),
   ...auditingColumns,

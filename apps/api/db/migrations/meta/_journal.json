@@ -1,12 +1,12 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1710226816846,
-      "tag": "0000_talented_wendigo",
+      "when": 1721849281659,
+      "tag": "0000_aberrant_network",
       "breakpoints": true
     }
   ]

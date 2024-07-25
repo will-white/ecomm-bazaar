@@ -4,11 +4,11 @@ import type { Config } from 'drizzle-kit';
 export default {
   schema: './db/schema.ts',
   out: './db/migrations',
-  driver: 'mysql2',
+  dialect: "postgresql",
   dbCredentials: {
-    host: process.env.DB_HOST ?? 'localhost',
-    user: process.env.DB_USER ?? 'root',
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME ?? 'bazaar',
+    host: process.env.PGHOST!,
+    user: process.env.PGUSERNAME,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE!,
   },
 } satisfies Config;

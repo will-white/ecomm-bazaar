@@ -1,19 +1,13 @@
 import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/mysql2';
+import { drizzle } from 'drizzle-orm/postgres-js';
 import schema from 'db/schema';
-import * as mysql from 'mysql2/promise';
 import users from './seeds/user';
+import postgres from 'postgres';
 
 const main = async () => {
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    multipleStatements: true,
-  });
+  const connection = postgres({ host: process.env.PGHOST });
 
-  const db = drizzle(connection, { schema, mode: 'default' });
+  const db = drizzle(connection, { schema });
 
   for (const user of users) {
     await db.insert(schema.user).values(user);
