@@ -1,13 +1,19 @@
-import { pgTable, varchar, timestamp, customType, uuid, pgSchema } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  varchar,
+  timestamp,
+  customType,
+  uuid,
+} from 'drizzle-orm/pg-core';
 
 const bytea = customType<{
-  data: Buffer
-  default: false
+  data: Buffer;
+  default: false;
 }>({
   dataType() {
-    return 'bytea'
+    return 'bytea';
   },
-})
+});
 
 // export const schema = pgSchema("test_schema");
 

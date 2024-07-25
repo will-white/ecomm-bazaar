@@ -20,7 +20,7 @@ export async function setupOpenAPI(
   app: INestApplication,
   fastify: FastifyInstance,
   configService: ConfigService,
-  port: number | string
+  port: number | string,
 ) {
   const path = '/' + configService.get<string | undefined>('OPENAPI_PATH');
   const username = configService.get<string | undefined>('OPENAPI_USERNAME');
@@ -62,7 +62,7 @@ export async function setupOpenAPI(
           const base64AuthString = request.headers.authorization?.split(' ')[1];
           const authString = Buffer.from(
             base64AuthString ?? '',
-            'base64'
+            'base64',
           ).toString('utf8');
 
           if (
@@ -93,7 +93,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     adapter,
-    { bufferLogs: true }
+    { bufferLogs: true },
   );
   const configService = app.get<ConfigService>(ConfigService);
 

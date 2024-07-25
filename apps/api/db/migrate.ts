@@ -8,7 +8,7 @@ import postgres from 'postgres';
 const main = async () => {
   const connection = postgres({
     host: process.env.PGHOST,
-    max: 1
+    max: 1,
   });
 
   const db = drizzle(connection, { schema });

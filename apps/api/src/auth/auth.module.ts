@@ -26,8 +26,8 @@ import { JwtCookieStrategy } from './strategies/jwt-cookie.strategy';
           // issuer:
           expiresIn: parseInt(
             configService.getOrThrow<string>(
-              'ACCESS_TOKEN_VALIDITY_DURATION_IN_SEC'
-            )
+              'ACCESS_TOKEN_VALIDITY_DURATION_IN_SEC',
+            ),
           ),
         },
       }),

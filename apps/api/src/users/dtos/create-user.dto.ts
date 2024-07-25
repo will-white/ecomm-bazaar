@@ -3,7 +3,8 @@ import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import schema from 'db/schema';
 
 export class CreateUserDto
-  implements Omit<typeof schema.user.$inferInsert, 'id'> {
+  implements Omit<typeof schema.user.$inferInsert, 'id'>
+{
   @IsString()
   @IsNotEmpty()
   @MaxLength(320)

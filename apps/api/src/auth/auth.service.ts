@@ -16,8 +16,8 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
-  ) { }
+    private readonly configService: ConfigService,
+  ) {}
 
   async login(email: string, password: string) {
     const {
@@ -45,7 +45,7 @@ export class AuthService {
           firstName: user.firstName,
           lastName: user.lastName,
         },
-        { expiresIn: 60 * 60 * 24 * 7 }
+        { expiresIn: 60 * 60 * 24 * 7 },
       ),
       accessToken: await this.jwtService.signAsync(payload, {
         expiresIn: 60 * 5,
@@ -71,7 +71,7 @@ export class AuthService {
     return {
       idToken: await this.jwtService.signAsync(
         { email },
-        { expiresIn: 60 * 60 * 24 * 7 }
+        { expiresIn: 60 * 60 * 24 * 7 },
       ),
       accessToken: await this.jwtService.signAsync(payload, {
         expiresIn: 60 * 5,
@@ -105,9 +105,9 @@ export class AuthService {
         secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
         // TODO: rememberMe increasing login duration
         expiresIn: this.configService.get(
-          'JWT_REFRESH_EXPIRE_DEFAULT_DURATION'
+          'JWT_REFRESH_EXPIRE_DEFAULT_DURATION',
         ),
-      }
+      },
     );
   }
 }

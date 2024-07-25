@@ -26,4 +26,4 @@ export const DB_CONNECTION = 'drizzleProvider';
   ],
   exports: [DB_CONNECTION],
 })
-export class DrizzleModule { }
+export class DrizzleModule {}

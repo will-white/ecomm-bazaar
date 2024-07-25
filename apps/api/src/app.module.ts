@@ -8,8 +8,13 @@ import { HealthModule } from './health/health.module';
 import { ListingsModule } from './listings/listings.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(),
-    HealthModule, AuthModule, UsersModule, ListingsModule],
+  imports: [
+    ConfigModule.forRoot(),
+    HealthModule,
+    AuthModule,
+    UsersModule,
+    ListingsModule,
+  ],
   controllers: [],
   providers: [
     {

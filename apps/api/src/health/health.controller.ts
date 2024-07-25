@@ -18,8 +18,8 @@ export class HealthController {
 
   constructor(
     private health: HealthCheckService,
-    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>
-  ) { }
+    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>,
+  ) {}
 
   @Get()
   @Public()
