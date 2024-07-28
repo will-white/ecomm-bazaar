@@ -4,6 +4,7 @@ import {
   ReactNode,
   SetStateAction,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 
@@ -22,7 +23,7 @@ export interface ThemeProviderInterface {
 
 const ThemeProvider = ({ children }: ThemeProviderInterface) => {
   const [theme, setTheme] = useState<ThemeOpt>(
-    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light',
   );
 
   useEffect(() => {
@@ -31,10 +32,10 @@ const ThemeProvider = ({ children }: ThemeProviderInterface) => {
     }
   }, [theme]); // every time the theme state updates we also update in local storage
 
+  const memoTheme = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={memoTheme}>{children}</ThemeContext.Provider>
   );
 };
 

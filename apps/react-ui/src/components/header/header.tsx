@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { memo, useContext } from 'react';
 import { UserContext } from '../../common/providers/user-provider';
+import AccountMenu from './accountMenu';
 
 // export interface HeaderProps {}
 
@@ -55,14 +56,16 @@ const Header = () => {
           />
         </FormControl>
       </div>
-      <div className="p-2 flex gap-2">
+      <div className="p-2 flex gap-2 items-center">
         <Link className="[&.active]:font-bold" to="/">
           Home
         </Link>
-        {idToken == null && (
+        {idToken == null ? (
           <Link className="[&.active]:font-bold" to="/login">
             Login
           </Link>
+        ) : (
+          <AccountMenu />
         )}
       </div>
     </header>

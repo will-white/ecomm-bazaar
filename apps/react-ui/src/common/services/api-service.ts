@@ -1,6 +1,6 @@
 import AxiosClient from './axios-client';
 
-const baseUrl = 'http://localhost:3000/api/';
+const baseUrl = 'http://localhost:3000/';
 
 class ApiService extends AxiosClient {
   constructor() {

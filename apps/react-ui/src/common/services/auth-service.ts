@@ -1,6 +1,6 @@
 import AxiosClient from './axios-client';
 
-const baseUrl = 'http://localhost:3000/api/auth/';
+const baseUrl = 'http://localhost:3000/auth/';
 
 class AuthService extends AxiosClient {
   constructor() {
@@ -26,6 +26,8 @@ class AuthService extends AxiosClient {
   }
 
   refresh = () => this.client.get('refresh');
+
+  logout = () => this.client.post('logout');
 }
 
 export default new AuthService();

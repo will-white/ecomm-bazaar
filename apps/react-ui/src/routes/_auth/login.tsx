@@ -49,7 +49,7 @@ const Login = () => {
       if (typeof email === 'string' && typeof password === 'string')
         mutate({ email, password, remember });
     },
-    [mutate]
+    [mutate],
   );
 
   return (

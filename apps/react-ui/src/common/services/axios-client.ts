@@ -16,12 +16,11 @@ export default class AxiosClient {
           // Access to config, request, and response
           if (error.response?.status === 401) {
             try {
-              // TODO: Retry call? Or rely on react-query to retry??
               const refresh = await fetch(
-                'http://localhost:3000/api/auth/' + 'refresh',
+                'http://localhost:3000/auth/' + 'refresh',
                 {
                   credentials: 'include',
-                }
+                },
               );
               console.log(refresh);
               if (!refresh.ok) {
@@ -38,7 +37,7 @@ export default class AxiosClient {
         }
 
         return Promise.reject(error);
-      }
+      },
     );
   }
 }
