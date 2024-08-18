@@ -10,11 +10,7 @@ pnpm start
 
 ## Docker
 
-Local Mysql DB
-
-```bash
-docker run --name bazaar -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true -e MYSQL_DATABASE=bazaar -d mysql
-```
+This project utilizies a dev container which runs the local/dev environment.
 
 ## Seed Local DB
 
