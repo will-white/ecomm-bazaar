@@ -1,6 +1,6 @@
 import AxiosClient from './axios-client';
 
-const baseUrl = 'http://localhost:3000/api/users/';
+const baseUrl = 'http://localhost:3000/users/';
 
 class UsersService extends AxiosClient {
   constructor() {

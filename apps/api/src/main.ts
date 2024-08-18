@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import helmet from '@fastify/helmet';
 import fastifyCookie from '@fastify/cookie';
 
-// Eventually OpenTelemetry
+// TODO: Eventually OpenTelemetry
 // https://www.tomray.dev/nestjs-open-telemetry#how-to-set-up-automatic-tracing-in-nestjs
 // https://www.tomray.dev/nestjs-open-telemetry#optimizing-tracing-performance
 

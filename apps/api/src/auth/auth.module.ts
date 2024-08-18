@@ -14,21 +14,14 @@ import { JwtCookieStrategy } from './strategies/jwt-cookie.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
+        secret: configService.getOrThrow('ACCESS_TOKEN_SECRET'),
         verifyOptions: {
-          // TODO: Require proper audience/issuer
-          // audience:,
-          // issuer:
-          clockTolerance: 30000, // 30s
+          issuer: configService.getOrThrow('JWT_ISSUER'),
+          clockTolerance: configService.get('JWT_SKEW_IN_SECONDS'),
         },
         signOptions: {
-          // audience:
-          // issuer:
-          expiresIn: parseInt(
-            configService.getOrThrow<string>(
-              'ACCESS_TOKEN_VALIDITY_DURATION_IN_SEC',
-            ),
-          ),
+          issuer: configService.getOrThrow('JWT_ISSUER'),
+          expiresIn: configService.getOrThrow('ACCESS_TOKEN_EXPIRES_IN'),
         },
       }),
       inject: [ConfigService],
