@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  NotImplementedException,
   Post,
   Req,
   Res,
@@ -35,19 +34,19 @@ export class AuthController {
   @ApiOperation({ summary: 'Login' })
   @HttpCode(HttpStatus.OK)
   async login(
-    // TODO: rememberMe increasing login duration
     @Body() req: LoginDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
     const { idToken, accessToken, refreshToken } = await this.authService.login(
-      req.email ?? '',
-      req.password ?? '',
+      req.email,
+      req.password,
+      req.rememberMe,
     );
 
     void response.setCookie('token', accessToken, {
-      maxAge: 900000, // 15 minutes in milliseconds
+      maxAge: 300,
       path: '/',
-      // httpOnly: true, // ensure the cookie will not be exposed
+      httpOnly: true, // ensure the cookie will not be exposed
       // secure: true,      // set this in production to ensure HTTPS
       // sameSite: 'none',
       // sameOrigin: 'none' // set this in production if the server is separate domain
@@ -55,9 +54,9 @@ export class AuthController {
 
     void response.setCookie('X-Refresh-Token', refreshToken, {
       // TODO: Figure out cookie maxAge along with refresh token expire duration
-      maxAge: 900000, // 15 minutes in milliseconds
+      maxAge: 900,
       path: '/',
-      // httpOnly: true, // ensure the cookie will not be exposed
+      httpOnly: true, // ensure the cookie will not be exposed
       // secure: true,      // set this in production to ensure HTTPS
       // sameSite: 'none',
       // sameOrigin: 'none' // set this in production if the server is separate domain
@@ -69,7 +68,7 @@ export class AuthController {
   @Post('register')
   @ApiCreatedResponse({ description: 'Registered user' })
   @ApiBadRequestResponse({ description: 'Invalid input' })
-  @ApiOperation({ summary: 'Register user' })
+  @ApiOperation({ summary: 'Register' })
   async register(
     @Body() req: { email?: string; password?: string; rememberMe?: boolean },
     @Res({ passthrough: true }) response: FastifyReply,
@@ -78,18 +77,18 @@ export class AuthController {
       await this.authService.register(req.email ?? '', req.password ?? '');
 
     void response.setCookie('token', accessToken, {
-      maxAge: 900000, // 15 minutes in milliseconds
+      maxAge: 300,
       path: '/',
-      // httpOnly: true, // ensure the cookie will not be exposed
+      httpOnly: true, // ensure the cookie will not be exposed
       // secure: true,      // set this in production to ensure HTTPS
       // sameSite: 'none',
       // sameOrigin: 'none' // set this in production if the server is separate domain
     });
 
     void response.setCookie('X-Refresh-Token', refreshToken, {
-      maxAge: 900000, // 15 minutes in milliseconds
+      maxAge: 900,
       path: '/',
-      // httpOnly: true, // ensure the cookie will not be exposed
+      httpOnly: true, // ensure the cookie will not be exposed
       // secure: true,      // set this in production to ensure HTTPS
       // sameSite: 'none',
       // sameOrigin: 'none' // set this in production if the server is separate domain
@@ -98,7 +97,7 @@ export class AuthController {
     return { idToken };
   }
 
-  // TODO: RefreshTokenGuard
+  // TODO: RefreshTokenGuard to check if Refreshtoken is good/valid
   @Get('refresh')
   @ApiOperation({ summary: 'Refresh Tokens' })
   async refresh(
@@ -109,9 +108,9 @@ export class AuthController {
     const accessToken = await this.authService.refreshAccessToken(refreshToken);
 
     void response.setCookie('token', accessToken, {
-      maxAge: 900000, // 15 minutes in milliseconds
+      maxAge: 300,
       path: '/',
-      // httpOnly: true, // ensure the cookie will not be exposed
+      httpOnly: true, // ensure the cookie will not be exposed
       // secure: true,      // set this in production to ensure HTTPS
       // sameSite: 'none',
       // sameOrigin: 'none' // set this in production if the server is separate domain
@@ -121,8 +120,9 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout() {
-    // TODO: Logout
-    throw new NotImplementedException();
+  @ApiOperation({ summary: 'Logout' })
+  logout(@Res({ passthrough: true }) response: FastifyReply) {
+    void response.clearCookie('X-Refresh-Token');
+    void response.clearCookie('token');
   }
 }

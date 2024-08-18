@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, compare } from 'bcrypt';
@@ -19,7 +20,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, rememberMe = false) {
     const {
       id,
       password: hashedPassword,
@@ -36,21 +37,14 @@ export class AuthService {
       throw new NotFoundException('Incorrect username or password');
     }
 
-    const payload: AccessToken = { sub: id };
-
     return {
-      idToken: await this.jwtService.signAsync(
-        {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        },
-        { expiresIn: 60 * 60 * 24 * 7 },
-      ),
-      accessToken: await this.jwtService.signAsync(payload, {
-        expiresIn: 60 * 5,
+      idToken: await this.jwtService.signAsync({
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
       }),
-      refreshToken: await this.generateRefreshToken(id),
+      accessToken: await this.generateAccessToken({ sub: id }),
+      refreshToken: await this.generateRefreshToken(id, rememberMe),
     };
   }
 
@@ -62,52 +56,59 @@ export class AuthService {
     }
 
     const hashedPassword = await hash(password, 12);
-    const result = await this.usersService.create({
+    const id = await this.usersService.create({
       email,
       password: Buffer.from(hashedPassword),
     });
-    const payload: AccessToken = { sub: result };
 
     return {
-      idToken: await this.jwtService.signAsync(
-        { email },
-        { expiresIn: 60 * 60 * 24 * 7 },
-      ),
-      accessToken: await this.jwtService.signAsync(payload, {
-        expiresIn: 60 * 5,
-      }),
-      refreshToken: await this.generateRefreshToken(result),
+      idToken: await this.jwtService.signAsync({ email }),
+      accessToken: await this.generateAccessToken({ sub: id }),
+      refreshToken: await this.generateRefreshToken(id),
     };
   }
 
   // Generates only a new access token
   async refreshAccessToken(jwt?: string) {
-    // Eventually move most of this to a RefreshGuard
+    // TODO: Eventually move most of this to a RefreshGuard
     if (jwt == undefined) throw new ForbiddenException();
 
-    const result = await this.jwtService.verifyAsync<RefreshToken>(jwt);
+    let result: RefreshToken | undefined = undefined;
+    try {
+      result = await this.jwtService.verifyAsync<RefreshToken>(jwt, {
+        secret: this.configService.getOrThrow('REFRESH_TOKEN_SECRET'),
+      });
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException();
+    }
+
+    if (result == undefined) throw new ForbiddenException();
+
     const { id } = (await this.usersService.findOneById(result.sub)) ?? {};
 
     if (id == undefined) throw new ForbiddenException();
 
-    const payload: AccessToken = { sub: id };
-
-    return this.jwtService.signAsync(payload);
+    return this.generateAccessToken({ sub: id });
   }
 
-  generateRefreshToken(userId: string) {
+  private generateRefreshToken(userId: string, rememberMe?: boolean) {
     // TODO: Eventually add invalidation to this via DB or redis
     return this.jwtService.signAsync(
       {
         sub: userId,
       },
       {
-        secret: this.configService.getOrThrow('JWT_REFRESH_SECRET'),
-        // TODO: rememberMe increasing login duration
-        expiresIn: this.configService.get(
-          'JWT_REFRESH_EXPIRE_DEFAULT_DURATION',
+        expiresIn: this.configService.getOrThrow(
+          rememberMe
+            ? 'REFRESH_TOKEN_REMEMBER_ME_EXPIRES_IN'
+            : 'REFRESH_TOKEN_EXPIRES_IN',
         ),
+        secret: this.configService.getOrThrow('REFRESH_TOKEN_SECRET'),
       },
     );
   }
+
+  private generateAccessToken = (payload: AccessToken) =>
+    this.jwtService.signAsync(payload);
 }
