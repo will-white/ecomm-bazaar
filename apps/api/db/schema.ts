@@ -4,6 +4,7 @@ import {
   timestamp,
   customType,
   uuid,
+  date,
 } from 'drizzle-orm/pg-core';
 
 const bytea = customType<{
@@ -27,7 +28,7 @@ const auditingColumns = {
 };
 
 export const user = pgTable('user', {
-  id: uuid('id').defaultRandom().primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
   email: varchar('email', { length: 320 }).notNull(),
   password: bytea('password', { length: 60 }).notNull(),
   firstName: varchar('first_name', { length: 48 }),
@@ -35,10 +36,15 @@ export const user = pgTable('user', {
   ...auditingColumns,
 });
 
-// export const userRelations = relations(user, ({ many, one }) => ({
-//   address: many(address),
-//   user: one(user),
-// }));
+export const userProfile = pgTable('user_profile', {
+  userId: uuid('user_id')
+    .primaryKey()
+    .references(() => user.id, { onDelete: 'cascade' })
+    .notNull(),
+  dob: date('dob', { mode: 'date' }).notNull(),
+  country: varchar('country', { length: 320 }).notNull(),
+  language: varchar('language', { length: 48 }),
+});
 
 // export const address = mysqlTable('address', {
 //   id: int('id').primaryKey().autoincrement(),
@@ -61,4 +67,5 @@ export const user = pgTable('user', {
 
 export default {
   user,
+  userProfile,
 };

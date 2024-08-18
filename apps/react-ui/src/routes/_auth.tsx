@@ -9,6 +9,7 @@ const AuthLayout = () => {
   );
 };
 
+// TODO: Route guard if logged in (UserContext?)
 export const Route = createFileRoute('/_auth')({
   component: memo(AuthLayout),
 });

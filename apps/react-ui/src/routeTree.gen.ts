@@ -11,7 +11,9 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as UserImport } from './routes/user_'
 import { Route as CartImport } from './routes/cart'
+import { Route as UserzzImport } from './routes/_userzz'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as UserIndexImport } from './routes/user_/index'
@@ -25,8 +27,18 @@ import { Route as AuthLoginImport } from './routes/_auth/login'
 
 // Create/Update Routes
 
+const UserRoute = UserImport.update({
+  path: '/user',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const CartRoute = CartImport.update({
   path: '/cart',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UserzzRoute = UserzzImport.update({
+  id: '/_userzz',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -41,8 +53,8 @@ const IndexRoute = IndexImport.update({
 } as any)
 
 const UserIndexRoute = UserIndexImport.update({
-  path: '/user/',
-  getParentRoute: () => rootRoute,
+  path: '/',
+  getParentRoute: () => UserRoute,
 } as any)
 
 const VendorIdRoute = VendorIdImport.update({
@@ -51,18 +63,18 @@ const VendorIdRoute = VendorIdImport.update({
 } as any)
 
 const UserProfileRoute = UserProfileImport.update({
-  path: '/user/profile',
-  getParentRoute: () => rootRoute,
+  path: '/profile',
+  getParentRoute: () => UserRoute,
 } as any)
 
 const UserPrivacyRoute = UserPrivacyImport.update({
-  path: '/user/privacy',
-  getParentRoute: () => rootRoute,
+  path: '/privacy',
+  getParentRoute: () => UserRoute,
 } as any)
 
 const UserAddressesRoute = UserAddressesImport.update({
-  path: '/user/addresses',
-  getParentRoute: () => rootRoute,
+  path: '/addresses',
+  getParentRoute: () => UserRoute,
 } as any)
 
 const ProfileIdRoute = ProfileIdImport.update({
@@ -85,64 +97,187 @@ const AuthLoginRoute = AuthLoginImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/_userzz': {
+      id: '/_userzz'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UserzzImport
+      parentRoute: typeof rootRoute
+    }
     '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
       preLoaderRoute: typeof CartImport
       parentRoute: typeof rootRoute
     }
+    '/user': {
+      id: '/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof UserImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
       preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof AuthImport
     }
     '/_auth/register': {
+      id: '/_auth/register'
+      path: '/register'
+      fullPath: '/register'
       preLoaderRoute: typeof AuthRegisterImport
       parentRoute: typeof AuthImport
     }
     '/profile/$id': {
+      id: '/profile/$id'
+      path: '/profile/$id'
+      fullPath: '/profile/$id'
       preLoaderRoute: typeof ProfileIdImport
       parentRoute: typeof rootRoute
     }
     '/user/addresses': {
+      id: '/user/addresses'
+      path: '/addresses'
+      fullPath: '/user/addresses'
       preLoaderRoute: typeof UserAddressesImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof UserImport
     }
     '/user/privacy': {
+      id: '/user/privacy'
+      path: '/privacy'
+      fullPath: '/user/privacy'
       preLoaderRoute: typeof UserPrivacyImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof UserImport
     }
     '/user/profile': {
+      id: '/user/profile'
+      path: '/profile'
+      fullPath: '/user/profile'
       preLoaderRoute: typeof UserProfileImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof UserImport
     }
     '/vendor/$id': {
+      id: '/vendor/$id'
+      path: '/vendor/$id'
+      fullPath: '/vendor/$id'
       preLoaderRoute: typeof VendorIdImport
       parentRoute: typeof rootRoute
     }
     '/user/': {
+      id: '/user/'
+      path: '/'
+      fullPath: '/user/'
       preLoaderRoute: typeof UserIndexImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof UserImport
     }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AuthRoute.addChildren([AuthLoginRoute, AuthRegisterRoute]),
+  AuthRoute: AuthRoute.addChildren({ AuthLoginRoute, AuthRegisterRoute }),
   CartRoute,
+  UserRoute: UserRoute.addChildren({
+    UserAddressesRoute,
+    UserPrivacyRoute,
+    UserProfileRoute,
+    UserIndexRoute,
+  }),
   ProfileIdRoute,
-  UserAddressesRoute,
-  UserPrivacyRoute,
-  UserProfileRoute,
   VendorIdRoute,
-  UserIndexRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/_auth",
+        "/_userzz",
+        "/cart",
+        "/user",
+        "/profile/$id",
+        "/vendor/$id"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/login",
+        "/_auth/register"
+      ]
+    },
+    "/_userzz": {
+      "filePath": "_userzz.tsx"
+    },
+    "/cart": {
+      "filePath": "cart.tsx"
+    },
+    "/user": {
+      "filePath": "user_.tsx",
+      "children": [
+        "/user/addresses",
+        "/user/privacy",
+        "/user/profile",
+        "/user/"
+      ]
+    },
+    "/_auth/login": {
+      "filePath": "_auth/login.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/register": {
+      "filePath": "_auth/register.tsx",
+      "parent": "/_auth"
+    },
+    "/profile/$id": {
+      "filePath": "profile.$id.tsx"
+    },
+    "/user/addresses": {
+      "filePath": "user_/addresses.tsx",
+      "parent": "/user"
+    },
+    "/user/privacy": {
+      "filePath": "user_/privacy.tsx",
+      "parent": "/user"
+    },
+    "/user/profile": {
+      "filePath": "user_/profile.tsx",
+      "parent": "/user"
+    },
+    "/vendor/$id": {
+      "filePath": "vendor.$id.tsx"
+    },
+    "/user/": {
+      "filePath": "user_/index.tsx",
+      "parent": "/user"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

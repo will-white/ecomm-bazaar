@@ -48,5 +48,5 @@ root.render(
         <RouterProvider router={router} />
       </UserProvider>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

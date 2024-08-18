@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "migration:gen": "drizzle-kit generate:pg",
+    "migration:gen": "drizzle-kit generate",
     "migration:run": "tsx db/migrate.ts",
     "migration:seed": "tsx db/seed.ts",
     "drizzle:seed": "tsx db/seed.ts",

@@ -1,12 +1,12 @@
 {
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1721849281659,
-      "tag": "0000_aberrant_network",
+      "version": "7",
+      "when": 1723950325466,
+      "tag": "0000_adorable_maria_hill",
       "breakpoints": true
     }
   ]

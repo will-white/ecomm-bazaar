@@ -6,12 +6,14 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
 import { ListingsModule } from './listings/listings.module';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     HealthModule,
     AuthModule,
+    ProfilesModule,
     UsersModule,
     ListingsModule,
   ],

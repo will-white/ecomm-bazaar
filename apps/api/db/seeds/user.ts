@@ -1,6 +1,6 @@
 import schema from 'db/schema';
 
-const users: (typeof schema.user.$inferInsert)[] = [
+export const users: (typeof schema.user.$inferInsert)[] = [
   {
     email: 'test@test.invalid',
     // password: '12345',
