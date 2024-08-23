@@ -17,7 +17,7 @@ import { PersonalInfoDto } from './dtos/personal-info.dto';
 export class ProfilesController {
   constructor(
     // private readonly profilesService: ProfilesService,
-    private readonly personalInfoService: PersonalInfoService,
+    private readonly personalInfoService: PersonalInfoService
   ) {}
 
   // @Post()

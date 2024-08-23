@@ -11,7 +11,7 @@ export class ListingsService {
   private readonly logger = new Logger(ListingsService.name);
 
   constructor(
-    @Inject(DB_CONNECTION) private db: MySql2Database<typeof schema>,
+    @Inject(DB_CONNECTION) private db: MySql2Database<typeof schema>
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

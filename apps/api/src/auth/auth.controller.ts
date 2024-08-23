@@ -35,12 +35,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(
     @Body() req: LoginDto,
-    @Res({ passthrough: true }) response: FastifyReply,
+    @Res({ passthrough: true }) response: FastifyReply
   ) {
     const { idToken, accessToken, refreshToken } = await this.authService.login(
       req.email,
       req.password,
-      req.rememberMe,
+      req.rememberMe
     );
 
     void response.setCookie('token', accessToken, {
@@ -71,7 +71,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Register' })
   async register(
     @Body() req: { email?: string; password?: string; rememberMe?: boolean },
-    @Res({ passthrough: true }) response: FastifyReply,
+    @Res({ passthrough: true }) response: FastifyReply
   ) {
     const { idToken, accessToken, refreshToken } =
       await this.authService.register(req.email ?? '', req.password ?? '');
@@ -102,7 +102,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Refresh Tokens' })
   async refresh(
     @Req() request: FastifyRequest,
-    @Res({ passthrough: true }) response: FastifyReply,
+    @Res({ passthrough: true }) response: FastifyReply
   ) {
     const refreshToken = request.cookies['X-Refresh-Token'];
     const accessToken = await this.authService.refreshAccessToken(refreshToken);

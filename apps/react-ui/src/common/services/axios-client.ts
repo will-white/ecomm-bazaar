@@ -20,7 +20,7 @@ export default class AxiosClient {
                 'http://localhost:3000/auth/' + 'refresh',
                 {
                   credentials: 'include',
-                },
+                }
               );
               console.log(refresh);
               if (!refresh.ok) {
@@ -37,7 +37,7 @@ export default class AxiosClient {
         }
 
         return Promise.reject(error);
-      },
+      }
     );
   }
 }

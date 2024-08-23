@@ -50,7 +50,7 @@ const UserProvider = ({ children }: UserProvider) => {
       idToken,
       setIdToken,
     }),
-    [idToken],
+    [idToken]
   );
 
   return (

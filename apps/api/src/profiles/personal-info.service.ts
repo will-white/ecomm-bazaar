@@ -10,7 +10,7 @@ export class PersonalInfoService {
   private readonly logger = new Logger(PersonalInfoService.name);
 
   constructor(
-    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>,
+    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>
   ) {}
 
   async findOneById(id: string): Promise<Partial<PersonalInfoDto> | undefined> {

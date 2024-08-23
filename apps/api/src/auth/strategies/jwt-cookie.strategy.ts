@@ -12,7 +12,7 @@ const cookieExtractor = (req: FastifyRequest) => {
 @Injectable()
 export class JwtCookieStrategy extends PassportStrategy(
   Strategy,
-  'jwt-cookie',
+  'jwt-cookie'
 ) {
   constructor(configService: ConfigService) {
     super({

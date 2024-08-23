@@ -12,7 +12,7 @@ export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
   constructor(
-    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>,
+    @Inject(DB_CONNECTION) private db: PostgresJsDatabase<typeof schema>
   ) {}
 
   async create(dto: CreateUserDto) {
@@ -40,7 +40,7 @@ export class UsersService {
 
   async findOneByEmail(
     email: string,
-    includePassword = false,
+    includePassword = false
   ): Promise<Partial<typeof schema.user.$inferInsert> | undefined> {
     return await this.db.query.user.findFirst({
       where: eq(schema.user.email, email),
@@ -49,7 +49,7 @@ export class UsersService {
   }
 
   async findOneById(
-    id: string,
+    id: string
   ): Promise<Partial<typeof schema.user.$inferInsert> | undefined> {
     return await this.db.query.user.findFirst({
       where: eq(schema.user.id, id),

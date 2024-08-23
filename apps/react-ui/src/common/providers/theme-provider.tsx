@@ -23,7 +23,7 @@ export interface ThemeProviderInterface {
 
 const ThemeProvider = ({ children }: ThemeProviderInterface) => {
   const [theme, setTheme] = useState<ThemeOpt>(
-    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light',
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
   );
 
   useEffect(() => {

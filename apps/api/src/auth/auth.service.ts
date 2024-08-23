@@ -17,7 +17,7 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
 
   async login(email: string, password: string, rememberMe = false) {
@@ -102,10 +102,10 @@ export class AuthService {
         expiresIn: this.configService.getOrThrow(
           rememberMe
             ? 'REFRESH_TOKEN_REMEMBER_ME_EXPIRES_IN'
-            : 'REFRESH_TOKEN_EXPIRES_IN',
+            : 'REFRESH_TOKEN_EXPIRES_IN'
         ),
         secret: this.configService.getOrThrow('REFRESH_TOKEN_SECRET'),
-      },
+      }
     );
   }
 
